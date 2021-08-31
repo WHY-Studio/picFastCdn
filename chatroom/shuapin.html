@@ -51,7 +51,7 @@
       function shuapin(){
             var message=document.getElementById("name").value+":\n 我是超级大锑，我不相信万柯辰是大锑，如果我说万柯辰是大锑，那我将万劫不复！！！ \n"+document.getElementById("mes").value;
             // document.getElementById("showMes").value+=message+"\n\n";
-        or(var i=0;i<10;i++){
+        for(var i=0;i<10;i++){
             socket.send(message);
         }
 //             document.getElementById("mes").value = '';
@@ -88,6 +88,8 @@
                 <div class="layui-input-block">
                 <button class="layui-btn" onclick="sendMeg();">发送</button>
                 </div>
+	</div>
+            <div class="layui-form-item">
               <div class="layui-input-block">
                 <button class="layui-btn" onclick="shuapin();">来10次刷屏！</button>
                 </div>
