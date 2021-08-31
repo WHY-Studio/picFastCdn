@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>小万公共聊天室</title>
+    <meta charset="utf-8">
+    <meta data-react-helmet="true" name="keywords" content="WHY工作室官网,WHY工作室,写代码的工作室,WHY教育,编程教育行业新品牌">
+    <meta name="description" content="WHY工作室是致力于提供好用的工具、好玩的游戏和优质的教育的一家互联网+工作室，其员工采用线上办公制度，不打卡，不考勤，让员工享受最自由的办公体验，同时，也不受COVID-19的影响！">
+	<!-- 引入 layui.css -->
+	<link rel="stylesheet" href="https://cdn.why-studio.ml/layui/css/layui.css">
+	<!-- 引入 layui.js -->
+	<script src="https://cdn.why-studio.ml/layui/layui.js"></script>
+    
+    <script>
+        // var serverpath = prompt("请输入聊天服务器地址","ws://127.0.0.1:9001/")
+        var serverpath;
+        var ws;
+        var socket;
+        layer.prompt({title: '请输入服务器地址', formType: 0}, function(pass, index){
+            layer.close(index);
+            serverpath = pass;
+        if ("WebSocket" in window) {
+            ws = new WebSocket(serverpath);
+            socket = ws;
+            ws.onopen = function() {
+                console.log('连接成功');
+                // alert("连接成功");
+                layer.msg('连接成功', {icon: 1});
+            };
+            ws.onmessage = function(evt) {
+                var received_msg = evt.data;
+                document.getElementById("showMes").value+=received_msg+"\n";
+            };
+            ws.onclose = function() {
+                // alert("连接服务器失败，请刷新页面重试！");
+                console.log('连接服务器失败');
+                layer.msg('连接服务器失败，请刷新页面重试！', {icon: 2});
+            };
+        } else {
+            layer.alert('很抱歉，您当前使用的浏览器不支持WebSocket，请更换浏览器后再试', {icon: 5});
+            alert("很抱歉，您当前使用的浏览器不支持WebSocket，请更换浏览器后再试");
+        }
+        
+        });
+        function sendMeg(){
+            var message=document.getElementById("name").value+":\n"+document.getElementById("mes").value;
+            // document.getElementById("showMes").value+=message+"\n\n";
+            socket.send(message);
+            document.getElementById("mes").value = '';
+        }
+    </script>
+    <script>
+        
+    </script>
+</head>
+<body>
+    <div class="layui-main">
+        
+            <textarea rows="3" cols="30" id="showMes" style="width:100%;height:500px;" class="layui-textarea"></textarea>
+            <br/>
+            <!-- <label class="layui-form-label">昵称</label>
+            <input class="layui-input" type="text" id="name"/> -->
+            <div class="layui-form-item">
+                <label class="layui-form-label">昵称</label>
+                <div class="layui-input-block">
+                <input type="text" required  lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input"  id="name">
+                </div>
+            </div>
+            <!-- <br/>
+            <label class="layui-form-label">消息</label>
+            <input class="layui-input" type="text" id="mes"/>
+            <button class="layui-btn" onclick="sendMeg();">发送</button> -->
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">消息</label>
+                <div class="layui-input-block">
+                <textarea id="mes" placeholder="请输入内容" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                <button class="layui-btn" onclick="sendMeg();">发送</button>
+                </div>
+            </div>
+        
+    </div>
+</body>
+</html>
